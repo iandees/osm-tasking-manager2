@@ -43,6 +43,9 @@ def main(global_config, **settings):
     load_local_settings(settings)
     settings.update({'version': version})
 
+    if os.environ.get('DATABASE_URL'):
+        settings.update({'sqlalchemy.url': os.environ.get('DATABASE_URL')})
+
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
